@@ -4,12 +4,14 @@
 
 *Description:*
 
-Dragonfly is an intelligent P2P based image and file distribution system. It aims to resolve three kinds of issues in image distribution: efficiency, flow control and security. It is definitely a general tool which is non-invasively intergrated with container engine to help deploy cloud native applications with less efforts in all kinds of cluster scales. In addition, users can experience services Dragonfly provides quite easily in Kubernetes via Helm and daemonset.
+Dragonfly is an intelligent P2P based image and file distribution system. It aims to resolve three major issues: efficiency, flow control and security. 
 
-Dragonfly ensures distribution efficiency of image by supporting P2P policy, and cluster managed by Dragonfly can avoid repetitive image downloads. To guarantee the well-running of existing application on node, Dragonfly pays much attentions on image distribution flow control, such as download task net speed limit and disk IO protection from high image storage IO. For security part, Dragonfly takes advantages of encryption algorithm for image transmission in order to meet secure demand of enterprise. Here are some key features of Dragonfly:
+It is a general tool which can be intergrated with container engine to help deploy cloud native applications at scale. In addition, users can deploy Dragonfly easily on Kubernetes via Helm and daemonset.
+
+Dragonfly ensures distribution efficiency of images with P2P policy, the avoidance of duplicated image downloads. To not impact the other running applications, Dragonfly implements image distribution flow control, such as download bandwidth limit and disk IO protection. Dragonfly also takes advantages of encryption algorithm for image transmission in order to meet secure demand of enterprise. Here are some key features of Dragonfly:
 
 * P2P based file distribution
-* Non-invasive support all kinds of container technologies
+* Support a wide range of container technologies
 * Host level speed limit
 * Passive CDN for downloads
 * Strong consistency of distributed image
@@ -19,19 +21,19 @@ Dragonfly ensures distribution efficiency of image by supporting P2P policy, and
 * Effective concurrency control of Registry Auth
 * Image encryption when transmission
 
-In terms of Dragonfly's architecture, it consists of three decoupled components:
+Dragonfly consists of three major components:
 
-1. **SuperNode**: provides image cache services from source image registry (such as Harbor) for whole cluster; takes a role of tracker and scheduler in P2P network which chooses appropriate downloading policy for each peer.
+1. **SuperNode**: provides image cache services from source image registry; chooses appropriate downloading policy for each peer.
 
-1. **dfget**: is a client which downloads all kinds of files from P2P network(peer nodes and SuperNode); plays the role of peer which receives control orders from SuperNode and transfers data among P2P network.
+1. **dfget**: is a client which downloads files from P2P network(peer nodes and SuperNode); receives control orders from SuperNode and transfers data among P2P network.
 
-1. **dfdaemon**: is an agent which proxies image pulling request from local container engine(Docker, containerd, PouchContainer and so on); filters out layer fetching requests and uses dfget to download all these layers.
+1. **dfdaemon**: is an agent which proxies image pulling request from local container engine; filters out layer fetching requests and uses dfget to download all these layers.
 
 **Statement on alignment with CNCF mission:**
 
-The Cloud Native Dragonfly project is well-aligned with the CNCF's mission statement of supporting cloud native systems. When developers and operators finish to package applications in container images, Dragonfly aims to tackle distribution issue of packaged image distribution(1a). The intelligent distribution ability of Dragonfly can dynamically manage network bandwidth, disk IO and other resources very efficiently reducing maintenance and operation cost(1b). From the very beginning, Dragonfly is decoupled with dependencies and designed to be consist of explicit and minimal services within itself(1c).
+The Cloud Native Dragonfly project is well-aligned with the CNCF's mission statement of supporting cloud native systems. When developers and operators finish to package applications in container images, Dragonfly aims to tackle distribution issue of packaged image distribution(1a). The intelligent distribution ability of Dragonfly can dynamically manage network bandwidth, disk IO and other resources efficiently to reduce maintenance and operation cost(1b). Dragonfly is decoupled with dependencies and designed to be consist of explicit and minimal services within itself(1c).
 
-The Cloud Native Dragonfly project is complimentary to other CNCF project, such as Kubernetes, Helm, Harbor and containerd. SuperNode of Dragonfly can be deployed via Helm and dfget and dfdaemon agents can be deployed via daemonset of Kubernetes. When releasing a cloud native application in Kubernetes, Harbor takes advantanges of Dragonfly's open API to control the image preheater. when startup of pod, containerd sends image pull request to Dragonfly and Dragonfly takes over image distribution part automatically, efficiently and safely.
+The Cloud Native Dragonfly project is complimentary to other CNCF projects, such as Kubernetes, Helm, Harbor and containerd. SuperNode of Dragonfly can be deployed via Helm and dfget and dfdaemon agents can be deployed via daemonset of Kubernetes. When releasing a cloud native application in Kubernetes, Harbor takes advantanges of Dragonfly's open API to control the image preheater. when startup of pod, containerd sends image pull request to Dragonfly and Dragonfly takes over image distribution part automatically, efficiently and safely.
 
 *Roadmap:* 
 
